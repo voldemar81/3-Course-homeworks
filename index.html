@@ -19,6 +19,47 @@
           <button class="start-button" type="submit">Старт</button>
         </form>
         </div>
-</main>    
+</main> 
+<script>
+    const globalState = {
+      currentLevel: null, // выбранный уровень сложности
+      currentTime: 0, // проведенное игроком время в игре
+      gameScreen: "start", // значение хода игры 
+      cards: [], // карты для игрового поля
+      selectedCards: [] // выбранные пользователем карты
+    }
+    
+    const startButton = document.querySelector(".start-button");
+    startButton.addEventListener("click", function(event) {
+      event.preventDefault();
+      // получаем выбранный уровень сложности
+      let levelRadios = document.getElementsByName("level");
+      let selectedLevel = null;
+    
+      for (let i = 0; i < levelRadios.length; i++) {
+        if (levelRadios[i].checked) {
+          selectedLevel = levelRadios[i].value;
+          break;
+        }
+      }
+    
+      if (!selectedLevel) {
+        alert("Выберите уровень сложности для начала игры!");
+      } else {
+        // обновляем информацию в глобальном состоянии
+        globalState.currentLevel = selectedLevel;
+        globalState.gameScreen = "game"; // переключаемся на игровой экран
+        
+        // перенаправляем пользователя на соответствующую страницу с игрой
+        if (selectedLevel === '1') {
+          window.location.href = "./level1.html";
+        } else if (selectedLevel === '2') {
+          window.location.href = "./level2.html";
+        } else if (selectedLevel === '3') {
+          window.location.href = "./level3.html";
+        }
+      }
+    });
+    </script>   
 </body>
 </html>
