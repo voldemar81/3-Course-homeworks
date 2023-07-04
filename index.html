@@ -11,14 +11,55 @@
     <div class="box">
         <p class="select-text">Выбери сложность</p>
         <div class="difficulty-level">
-            <div class="level">1</div>
-            <div class="level">2</div>
-            <div class="level">3</div>
+            <label class="level"><input type="radio" name="level" value="1" id="level1">1</label>
+            <label class="level"><input type="radio" name="level" value="2" id="level2">2</label>
+            <label class="level"><input type="radio" name="level" value="3" id="level3">3</label>
         </div>
-        <a href="#">
-            <button class="start-button">Старт</button>
-        </a>
-    </div>
-</main>    
+        <form action="">
+          <button class="start-button" type="submit">Старт</button>
+        </form>
+        </div>
+</main> 
+<script>
+    const globalState = {
+      currentLevel: null, // выбранный уровень сложности
+      currentTime: 0, // проведенное игроком время в игре
+      gameScreen: "start", // значение хода игры 
+      cards: [], // карты для игрового поля
+      selectedCards: [] // выбранные пользователем карты
+    }
+    
+    const startButton = document.querySelector(".start-button");
+    startButton.addEventListener("click", function(event) {
+      event.preventDefault();
+      // получаем выбранный уровень сложности
+      let levelRadios = document.getElementsByName("level");
+      let selectedLevel = null;
+    
+      for (let i = 0; i < levelRadios.length; i++) {
+        if (levelRadios[i].checked) {
+          selectedLevel = levelRadios[i].value;
+          break;
+        }
+      }
+    
+      if (!selectedLevel) {
+        alert("Выберите уровень сложности для начала игры!");
+      } else {
+        // обновляем информацию в глобальном состоянии
+        globalState.currentLevel = selectedLevel;
+        globalState.gameScreen = "game"; // переключаемся на игровой экран
+        
+        // перенаправляем пользователя на соответствующую страницу с игрой
+        if (selectedLevel === '1') {
+          window.location.href = "./level1.html";
+        } else if (selectedLevel === '2') {
+          window.location.href = "./level2.html";
+        } else if (selectedLevel === '3') {
+          window.location.href = "./level3.html";
+        }
+      }
+    });
+    </script>   
 </body>
 </html>
