@@ -11,15 +11,16 @@
     <div class="box">
         <p class="select-text">Выбери сложность</p>
         <div class="difficulty-level">
-            <label class="level"><input type="radio" name="level" value="1" id="level1">1</label>
-            <label class="level"><input type="radio" name="level" value="2" id="level2">2</label>
-            <label class="level"><input type="radio" name="level" value="3" id="level3">3</label>
+            <label class="level"><input class="input" type="radio" name="level" value="1" id="level1">1</label>
+            <label class="level"><input class="input" type="radio" name="level" value="2" id="level2">2</label>
+            <label class="level"><input class="input" type="radio" name="level" value="3" id="level3">3</label>
         </div>
         <form action="">
           <button class="start-button" type="submit">Старт</button>
         </form>
         </div>
 </main> 
+
 <script>
     const globalState = {
       currentLevel: null, // выбранный уровень сложности
