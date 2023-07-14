@@ -16,6 +16,7 @@
 body {
     font-family: "StratosSkyeng", sans-serif;
     font-style: normal; 
+    background-color:#004980 ;
 
 }
 
@@ -28,7 +29,6 @@ body {
 .game-start {
     width: 1024px;
     height: 774px;
-    background-color:#004980 ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,6 +78,12 @@ body {
     font-size: 64px;
     line-height: 72px;
     border-radius: 12px;
+   
+
+}
+
+.input {
+    appearance: none;   
 
 }
 
@@ -99,4 +105,64 @@ a {
     font-size: 24px;
     line-height: 32px;
     color: #FFFFFF;
+}
+
+.game-screen-start {
+    width: 1024px;
+    height: 774px;
+    margin-left: 23px;
+    margin-right: 23px;
+}
+
+.game-screen-nav {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.timer-text {
+    margin-bottom: -16px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 41px;
+
+
+}
+
+.time-text {
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    /* margin-left: 55px;
+    margin-left: 42px; */
+}
+
+.time {
+    color: #FFF;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 72px;
+}
+
+.card-shirt {
+    width: 95px;
+    height: 133px;
+    border-radius: 4px;
+    background: #FFF;
+}
+
+.cards-box {
+    margin-top: 48px;
+    margin-bottom: 49px;
+    display: grid; 
+    grid-template-columns: repeat(9, 1fr); 
+    /* grid-template-rows: repeat(4, 1fr) */
+    /* grid-gap: 10px;
+    grid-row-gap: 10px; */
+    gap: 15px;
+
 }
