@@ -1,13 +1,13 @@
-const StartGame = null;
-const GameLevelOne = 1;
-const GameLevelTwo = 2;
-const GameLevelThree = 3;
+const StartGame = null
+const GameLevelOne = 1
+const GameLevelTwo = 2
+const GameLevelThree = 3
 
-import { mixCards } from './cards storage.js';
-export let page = StartGame;
-export let gameResult = [];
+import { mixCards } from "./cards storage.js"
+export let page = StartGame
+export let gameResult = []
 
-const appEl = document.querySelector('.game-start');
+const appEl = document.querySelector(".game-start")
 
 const renderGame = () => {
     if (page === StartGame) {
@@ -27,34 +27,34 @@ const renderGame = () => {
    </form>
    <div id="levelError" style="color: red; display: none;">Выберите уровень</div>
    </div>
-           `;
+           `
 
-        appEl.innerHTML = startGameHtml;
+        appEl.innerHTML = startGameHtml
 
-        document.getElementById('startButton').addEventListener('click', () => {
-            const level = document.getElementsByName('level');
-            let selectedLevel = false;
+        document.getElementById("startButton").addEventListener("click", () => {
+            const level = document.getElementsByName("level")
+            let selectedLevel = false
 
             for (let i = 0; i < level.length; i++) {
-                if (level[i].checked && level[i].value === '1') {
-                    page = GameLevelOne;
-                    selectedLevel = true;
-                } else if (level[i].checked && level[i].value === '2') {
-                    page = GameLevelTwo;
-                    selectedLevel = true;
-                } else if (level[i].checked && level[i].value === '3') {
-                    page = GameLevelThree;
-                    selectedLevel = true;
+                if (level[i].checked && level[i].value === "1") {
+                    page = GameLevelOne
+                    selectedLevel = true
+                } else if (level[i].checked && level[i].value === "2") {
+                    page = GameLevelTwo
+                    selectedLevel = true
+                } else if (level[i].checked && level[i].value === "3") {
+                    page = GameLevelThree
+                    selectedLevel = true
                 }
             }
 
             if (!selectedLevel) {
-                document.getElementById('levelError').style.display = 'block';
+                document.getElementById("levelError").style.display = "block"
             } else {
-                document.getElementById('levelError').style.display = 'none';
-                renderGame();
+                document.getElementById("levelError").style.display = "none"
+                renderGame()
             }
-        });
+        })
     }
 
     if (page !== StartGame) {
@@ -77,81 +77,81 @@ const renderGame = () => {
    <div class="cards-box">
        
    </div>  
-  </main>`;
+  </main>`
 
-        appEl.innerHTML = gameLevelHtml;
+        appEl.innerHTML = gameLevelHtml
 
-        renderCards();
+        renderCards()
     }
-};
-renderGame();
+}
+renderGame()
 
 const renderCards = () => {
-    let newCards = mixCards({ page });
-    let preview = true;
+    let newCards = mixCards({ page })
+    let preview = true
 
     const renderHtml = () => {
         const cardsHtml = newCards
             .map((card, index) => {
                 return `
        <div data-index='${index}' class="card card-shirt">
-           ${preview ? `<img src="${card.image}" alt=""></img>` : ''}
-       </div>`;
+           ${preview ? `<img src="${card.image}" alt=""></img>` : ""}
+       </div>`
             })
-            .join('');
-        return cardsHtml;
-    };
+            .join("")
+        return cardsHtml
+    }
 
-    document.querySelector('.cards-box').innerHTML = renderHtml();
+    document.querySelector(".cards-box").innerHTML = renderHtml()
 
     delay(5000).then(() => {
         if (preview === true) {
-            preview = false;
-            document.querySelector('.cards-box').innerHTML = renderHtml();
-            flipСard(newCards);
+            preview = false
+            document.querySelector(".cards-box").innerHTML = renderHtml()
+            flipСard(newCards)
         }
-    });
-};
+    })
+}
 
 const flipСard = (newCards) => {
-    const cardElements = document.querySelectorAll('.card');
-    let openСards = 0;
+    const cardElements = document.querySelectorAll(".card")
+    let openСards = 0
 
     for (const cardElement of cardElements) {
-        cardElement.addEventListener('click', () => {
-            const index = cardElement.dataset.index;
+        cardElement.addEventListener("click", () => {
+            const index = cardElement.dataset.index
             cardElement.innerHTML = `
-        <img src="${newCards[index].image}" alt=""></img>`;
+        <img src="${newCards[index].image}" alt=""></img>`
 
-            gameResult.push(newCards[index]);
-            console.log(gameResult);
+            gameResult.push(newCards[index])
+            console.log(gameResult)
             if (gameResult.length > 1) {
                 if (gameResult[0] === gameResult[1]) {
-                    gameResult = [];
-                    openСards++;
+                    gameResult = []
+                    openСards++
                     if (openСards === newCards.length / 2) {
                         setTimeout(() => {
-                            alert('You win');
-                            openСards = 0;
-                        }, 500);
+                            alert("You win")
+                            openСards = 0
+                        }, 500)
                     }
                 } else {
                     setTimeout(() => {
-                        alert('You lose');
-                        gameResult = [];
-                        page = StartGame;
-                        renderGame();
-                    }, 500);
+                        alert("You lose")
+                        gameResult = []
+                        page = StartGame
+                        renderGame()
+                    }, 500)
                 }
             }
-        });
+        })
     }
-};
+}
 
 function delay(interval = 100) {
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve();
-        }, interval);
-    });
+            resolve()
+        }, interval)
+    })
 }
