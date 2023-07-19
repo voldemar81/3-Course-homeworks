@@ -1,3 +1,4 @@
+import "./styles.css"
 const StartGame = null
 const GameLevelOne = 1
 const GameLevelTwo = 2

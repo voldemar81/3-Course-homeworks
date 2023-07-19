@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: "StratosSkyeng";
-    src: url("./fonts/statosskyeng-v1.001/Desktop fonts/stratosskyeng-regular.otf") format("truetype");
+    src: url("../fonts/statosskyeng-v1.001/Desktop fonts/stratosskyeng-regular.otf") format("truetype");
     font-style: normal;
     font-weight: normal;
   }
@@ -157,7 +157,7 @@ a {
     height: 133px;
     border-radius: 4px;
     background: #FFF;
-    background-image: url('img/1.jpg');
+    background-image: url('../static/1.jpg');
     background-size: cover;
  
 }
