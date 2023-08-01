@@ -1,52 +1,48 @@
 import './styles.css';
-let StartGame = null;
+const StartGame = null;
 const GameLevelOne = 1;
 const GameLevelTwo = 2;
 const GameLevelThree = 3;
-
 import { cards, mixCards } from './cards storage.js';
 export let page = StartGame;
 export let gameResult = [];
-
-let startTime = null; 
-let intervalId = null; 
+let startTime = null;
+let intervalId = null;
 
 const startTimer = () => {
-  startTime = Date.now(); 
-  intervalId = setInterval(updateTimer, 1000); 
+    startTime = Date.now();
+    intervalId = setInterval(updateTimer, 1000);
 };
 
 const updateTimer = () => {
-  const currentTime = Date.now(); 
-  const elapsedSeconds = Math.floor((currentTime - startTime) / 1000); 
+    const currentTime = Date.now();
+    const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
 
-  const minutes = Math.floor(elapsedSeconds / 60); 
-  const seconds = elapsedSeconds % 60; 
+    const minutes = Math.floor(elapsedSeconds / 60);
+    const seconds = elapsedSeconds % 60;
 
-  const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds
-    .toString()
-    .padStart(2, '0')}`; 
+    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds
+        .toString()
+        .padStart(2, '0')}`;
 
-  const timerElement = document.querySelector('.time'); 
-  timerElement.textContent = formattedTime; 
+    const timerElement = document.querySelector('.time');
+    timerElement.textContent = formattedTime;
 
-  console.log(formattedTime);
+    console.log(formattedTime);
 };
 
 const stopTimer = () => {
-  clearInterval(intervalId); 
-  const finalTime = document.querySelector('.time').textContent; 
-  console.log(`Время игры: ${finalTime}`);
+    clearInterval(intervalId);
+    const finalTime = document.querySelector('.time').textContent;
+    console.log(`Время игры: ${finalTime}`);
 };
-
-
 
 const appEl = document.querySelector('.game-start');
 
 const renderGame = () => {
     if (page === StartGame) {
         const startGameHtml = `
-   <div class="box">
+   <div class="box" id = "box">
    <p class="select-text">Выбери сложность</p>
    <div class="difficulty-level">
    <input class="input" type="radio" name="level" value="1" id="level1">
@@ -66,35 +62,30 @@ const renderGame = () => {
         appEl.innerHTML = startGameHtml;
 
         document.getElementById('startButton').addEventListener('click', () => {
-            const selectedLevel = document.querySelector('input[name="level"]:checked');
-          
-            if (selectedLevel && selectedLevel.value === '1') {
-              page = GameLevelOne;
-            } else if (selectedLevel && selectedLevel.value === '2') {
-              page = GameLevelTwo;
-            } else if (selectedLevel && selectedLevel.value === '3') {
-              page = GameLevelThree;
-            }
-          
-            if (!selectedLevel) {
-              document.getElementById('levelError').style.display = 'block';
-            } else {
-              document.getElementById('levelError').style.display = 'none';
-              renderGame();
-            }
-          });
+            const selectedLevel = document.querySelector(
+                'input[name="level"]:checked',
+            );
 
-       
+            if (selectedLevel && selectedLevel.value === '1') {
+                page = GameLevelOne;
+            } else if (selectedLevel && selectedLevel.value === '2') {
+                page = GameLevelTwo;
+            } else if (selectedLevel && selectedLevel.value === '3') {
+                page = GameLevelThree;
+            }
+
+            if (!selectedLevel) {
+                document.getElementById('levelError').style.display = 'block';
+            } else {
+                document.getElementById('levelError').style.display = 'none';
+                renderGame();
+            }
+        });
     }
 
     if (page !== StartGame) {
-        // Удаление текущего экрана игры
-        clearInterval(intervalId);
-        while (appEl.firstChild) {
-          appEl.removeChild(appEl.firstChild);
-        }
-          const gameLevelHtml = `
-          <main class="game-screen-start center ">
+        const gameLevelHtml = `
+          <main class="game-screen-start center " id="gameScreenStart">
             <div class="game-screen-nav">
               <div class="game-timer-box">
                 <div class="game-screen-timer">
@@ -109,24 +100,23 @@ const renderGame = () => {
             </div>
             <div class="cards-box"></div>
           </main>`;
-      
-        appEl.innerHTML = gameLevelHtml;
-      
-        const startOverButton = document.getElementById('StartOver');
-       startOverButton.addEventListener('click', () => {
-        clearInterval(intervalId); 
-       StartGame = true; 
-        renderGame(); 
-     });
-      
-        renderCards();
-      }
 
-    
+        appEl.innerHTML = gameLevelHtml;
+
+        const startOverButton = document.getElementById('StartOver');
+        startOverButton.addEventListener('click', () => {
+            clearInterval(intervalId);
+            stopTimer();
+            appEl.innerHTML = '';
+            page = StartGame;
+            renderGame();
+        });
+
+        renderCards();
+    }
 };
 
 renderGame();
-
 
 const renderCards = () => {
     let newCards = mixCards({ page });
@@ -146,25 +136,17 @@ const renderCards = () => {
 
     document.querySelector('.cards-box').innerHTML = renderHtml();
 
-    if (page === 'finishGame') {
-      stopTimer()
-      clearInterval(intervalId);
-      renderFinishGame();
-    }
-
-    delay(5000).then(() => {
+        delay(5000).then(() => {
         if (preview === true) {
             preview = false;
             document.querySelector('.cards-box').innerHTML = renderHtml();
             flipСard(newCards);
-            startTimer()
-        }
+            startTimer();
         
+        }
     });
-    
    
 };
-
 
 const flipСard = (newCards) => {
     const cardElements = document.querySelectorAll('.card');
@@ -184,63 +166,47 @@ const flipСard = (newCards) => {
                     gameResult = [];
                     openСards++;
                     if (openСards === newCards.length / 2) {
-                        setTimeout(() => {
+                        
                             clearInterval(intervalId);
+                            stopTimer();
                             showFinalScreen('You win');
                             openСards = 0;
-                        }, 0);
+                        
                     }
                 } else {
-                    setTimeout(() => {
+                    
+                        stopTimer();
                         clearInterval(intervalId);
                         showFinalScreen('You lose');
                         gameResult = [];
-                        page = 'finishGame';
-                      //  finalScreenBack(cards);
-                        renderGame();
-                    }, 0);
+                        
+                    
                 }
             }
         });
     }
-    setTimeout(() => {
-    if (page === 'finishGame') {
-      clearInterval(intervalId);
-      renderFinishGame();
+    if (showFinalScreen === true) {
+        appEl.innerHTML = '';
+       renderGame();    
+        
     }
-   }, 1);
-
-    
-};
-
-
-const renderFinishGame = () => {
-  const cardsBox = document.querySelector('.cards-box');
-  cardsBox.classList.add('final-background');
-
-  cards.forEach((card) => {
-    const cardElement = document.createElement('div');
-    cardElement.classList.add('card');
-    
-    const cardImage = document.createElement('img');
-    cardImage.src = card.image;
-    cardElement.appendChild(cardImage);
-    
-    cardsBox.appendChild(cardElement);
-  });
+   
 };
 
 
 const showFinalScreen = (status) => {
-  const finalScreen = document.createElement('div');
-  finalScreen.classList.add('final-screen');
-
-  finalScreen.innerHTML = `
+    
+     const finalScreen = document.createElement('div');
+    finalScreen.classList.add('final-screen');
+    
+    const finalScreenHtml = `
+    
+    <div class="game-start center ">
       <form class="final">
           ${
               status === 'You win'
-                  ? '<img src="static/win.png" title="Выигрыш" alt="Выигрыш"></img>'
-                  : '<img src="static/dead.png" title="Проигрыш" alt="Проигрыш"></img>'
+                  ? '<img src="static/win.png" title="win" alt="win"></img>'
+                  : '<img src="static/dead.png" title="loose" alt="loose"></img>'
           }
           <div class="final-text">${
               status === 'You win'
@@ -251,22 +217,25 @@ const showFinalScreen = (status) => {
           <p class="final-time" id="finalTime">${0}</p>
           <button type="button" class="start-button" id="restart">Играть снова</button>
       </form>
+      </div>
+      
   `;
+  finalScreen.innerHTML = finalScreenHtml;
 
-  const finalTimeElement = finalScreen.querySelector('.final-time');
-  finalTimeElement.textContent = document.querySelector('.time').textContent;
+    const finalTimeElement = finalScreen.querySelector('.final-time');
+    finalTimeElement.textContent = document.querySelector('.time').textContent;
 
-  const resetButton = finalScreen.querySelector('.start-button');
-  resetButton.addEventListener('click', () => {
-      document.body.removeChild(finalScreen);
-      page = StartGame;
-      renderGame();
-  });
-
-  document.body.appendChild(finalScreen);
-  stopTimer();
+    const resetButton = finalScreen.querySelector('.start-button');
+    resetButton.addEventListener('click', () => {
+        document.body.removeChild(finalScreen);
+        page = StartGame;
+        renderGame();
+    });
+    
+    document.body.appendChild(finalScreen);
+    stopTimer();
+   
 };
-
 
 function delay(interval = 100) {
     return new Promise((resolve) => {
