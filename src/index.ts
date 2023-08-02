@@ -1,13 +1,14 @@
 import './styles.css';
-const StartGame = null;
+const StartGame = 4;
 const GameLevelOne = 1;
 const GameLevelTwo = 2;
 const GameLevelThree = 3;
-import { cards, mixCards } from './cards storage.js';
-export let page = StartGame;
-export let gameResult = [];
-let startTime = null;
-let intervalId = null;
+import { mixCards,Card } from './cards storage';
+export let page: number = StartGame;
+// export let gameResult = [];
+export let gameResult: Card[] = [];
+let startTime: number;
+let intervalId: NodeJS.Timeout;
 
 const startTimer = () => {
     startTime = Date.now();
@@ -24,20 +25,34 @@ const updateTimer = () => {
     const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds
         .toString()
         .padStart(2, '0')}`;
-
+        
     const timerElement = document.querySelector('.time');
+    if (timerElement !== null) {
     timerElement.textContent = formattedTime;
-
+        
     console.log(formattedTime);
+    }   
 };
+// let minutesElement: HTMLElement | null = document.querySelector('.min-figures');
 
-const stopTimer = () => {
+// const stopTimer = () => {
+//     clearInterval(intervalId);
+    
+//     const finalTime = document.querySelector('.time').textContent;
+    
+//     console.log(`Время игры: ${finalTime}`);
+    
+
+// };
+const stopTimer = (): void => {
     clearInterval(intervalId);
-    const finalTime = document.querySelector('.time').textContent;
+    
+       const finalTime = document.querySelector('.time')!.textContent;
+    
     console.log(`Время игры: ${finalTime}`);
-};
+    };
 
-const appEl = document.querySelector('.game-start');
+const appEl: Element | null = document.querySelector('.game-start')!;
 
 const renderGame = () => {
     if (page === StartGame) {
@@ -61,25 +76,34 @@ const renderGame = () => {
 
         appEl.innerHTML = startGameHtml;
 
-        document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('startButton')?.addEventListener('click', () => {
             const selectedLevel = document.querySelector(
                 'input[name="level"]:checked',
             );
-
-            if (selectedLevel && selectedLevel.value === '1') {
+           
+            if (selectedLevel && (selectedLevel as HTMLInputElement).value === '1') {
                 page = GameLevelOne;
-            } else if (selectedLevel && selectedLevel.value === '2') {
+            }else if (selectedLevel && (selectedLevel as HTMLInputElement).value === '2') {
                 page = GameLevelTwo;
-            } else if (selectedLevel && selectedLevel.value === '3') {
+            } else if (selectedLevel && (selectedLevel as HTMLInputElement).value === '3') {
                 page = GameLevelThree;
             }
 
-            if (!selectedLevel) {
-                document.getElementById('levelError').style.display = 'block';
+            const levelError = document.getElementById('levelError');
+            if (levelError) {
+              if (!selectedLevel) {
+            levelError.style.display = 'block';
             } else {
-                document.getElementById('levelError').style.display = 'none';
-                renderGame();
-            }
+            levelError.style.display = 'none';
+            renderGame();
+    }
+}
+            // if (!selectedLevel) {
+            //     document.getElementById('levelError').style.display = 'block';
+            // } else {
+            //     document.getElementById('levelError').style.display = 'none';
+            //     renderGame();
+            // }
         });
     }
 
@@ -102,14 +126,14 @@ const renderGame = () => {
           </main>`;
 
         appEl.innerHTML = gameLevelHtml;
-
-        const startOverButton = document.getElementById('StartOver');
-        startOverButton.addEventListener('click', () => {
+        
+         document.getElementById('StartOver')?.addEventListener('click', () => {
             clearInterval(intervalId);
             stopTimer();
             appEl.innerHTML = '';
             page = StartGame;
             renderGame();
+        
         });
 
         renderCards();
@@ -133,13 +157,18 @@ const renderCards = () => {
             .join('');
         return cardsHtml;
     };
-
-    document.querySelector('.cards-box').innerHTML = renderHtml();
+    const cardsBox = document.querySelector(
+        '.cards-box',
+      ) as HTMLDivElement;
+        // const cardsBox = document.querySelector('.cards-box');
+       cardsBox.innerHTML = renderHtml();
+    
 
         delay(5000).then(() => {
         if (preview === true) {
             preview = false;
-            document.querySelector('.cards-box').innerHTML = renderHtml();
+            cardsBox.innerHTML = renderHtml();
+            // document.querySelector('.cards-box').innerHTML = renderHtml();
             flipСard(newCards);
             startTimer();
         
@@ -148,17 +177,24 @@ const renderCards = () => {
    
 };
 
-const flipСard = (newCards) => {
+const flipСard = (newCards: Card[]) => {
     const cardElements = document.querySelectorAll('.card');
     let openСards = 0;
 
-    for (const cardElement of cardElements) {
-        cardElement.addEventListener('click', () => {
-            const index = cardElement.dataset.index;
-            cardElement.innerHTML = `
-                <img src="${newCards[index].image}" alt=""></img>
-            `;
+    // for (const cardElement of cardElements) {
+    //     cardElement.addEventListener('click', () => {
+    //         const index = cardElement.dataset.index;
+    //         cardElement.innerHTML = `
+    //             <img src="${newCards[index].image}" alt=""></img>
+    //         `;
+    cardElements.forEach((cardElement) => {
 
+        const divElement = cardElement as HTMLDivElement;
+    
+        divElement.addEventListener('click', () => {
+    
+          const index: number = Number(divElement.dataset.index);
+          divElement.innerHTML = `<img src="${newCards[index].image}" alt=""></img>`;
             gameResult.push(newCards[index]);
             console.log(gameResult);
             if (gameResult.length > 1) {
@@ -184,17 +220,16 @@ const flipСard = (newCards) => {
                 }
             }
         });
-    }
-    if (showFinalScreen === true) {
+    })
+    if (typeof showFinalScreen === 'boolean' && showFinalScreen === true) {
         appEl.innerHTML = '';
-       renderGame();    
-        
+        renderGame();    
     }
    
 };
 
 
-const showFinalScreen = (status) => {
+const showFinalScreen = (status: string) => {
     
      const finalScreen = document.createElement('div');
     finalScreen.classList.add('final-screen');
@@ -222,23 +257,37 @@ const showFinalScreen = (status) => {
   `;
   finalScreen.innerHTML = finalScreenHtml;
 
-    const finalTimeElement = finalScreen.querySelector('.final-time');
-    finalTimeElement.textContent = document.querySelector('.time').textContent;
+    // const finalTimeElement = finalScreen.querySelector('.final-time');
+    // finalTimeElement.textContent = document.querySelector('.time').textContent;
 
+    const finalTimeElement = finalScreen.querySelector('.final-time');
+
+    if (finalTimeElement !== null) {
+      finalTimeElement.textContent = document.querySelector('.time')!.textContent;
+    }
+    // const resetButton = finalScreen.querySelector('.start-button');
+    // resetButton.addEventListener('click', () => {
+    //     document.body.removeChild(finalScreen);
+    //     page = StartGame;
+    //     renderGame();
+    // });
+    
     const resetButton = finalScreen.querySelector('.start-button');
+if (resetButton) {
     resetButton.addEventListener('click', () => {
         document.body.removeChild(finalScreen);
         page = StartGame;
         renderGame();
     });
-    
+}
+
     document.body.appendChild(finalScreen);
     stopTimer();
    
 };
 
 function delay(interval = 100) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
         setTimeout(() => {
             resolve();
         }, interval);

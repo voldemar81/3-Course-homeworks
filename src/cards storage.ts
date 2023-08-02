@@ -1,14 +1,27 @@
-export function mixCards({ page }) {
-    let cardsDealt = [];
+// export function mixCards({ page }) {
+//     let cardsDealt = [];
+//     for (let i = 0; i < page * 3; i++) {
+//         cardsDealt.push(cards[Math.round(Math.random() * cards.length)]);
+//     }
+//     return cardsDealt.concat(cardsDealt).sort(() => Math.random() - 0.5);
+// }
 
+export function mixCards({ page }: { page: number }) {
+    // let cardsDealt: { suit: string; rank: string; image: string; }[] = [];
+    let cardsDealt: Card[]  = [];
     for (let i = 0; i < page * 3; i++) {
-        cardsDealt.push(cards[Math.round(Math.random() * cards.length)]);
+    cardsDealt.push(cards[Math.round(Math.random() * cards.length)]);
+    }
+    return cardsDealt.concat(cardsDealt).sort(() => Math.random() - 0.5);
     }
 
-    return cardsDealt.concat(cardsDealt).sort(() => Math.random() - 0.5);
-}
+    export type Card = {
+        suit: string;
+        rank: string;
+        image: string;
+      };
 
-export const cards = [
+export const cards: Card[] = [
     {
         suit: 'spades',
         rank: 'ace',
