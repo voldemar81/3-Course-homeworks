@@ -57,6 +57,7 @@ const appEl: Element | null = document.querySelector('.game-start')!;
 const renderGame = () => {
     if (page === StartGame) {
         const startGameHtml = `
+   <form action="">    
    <div class="box" id = "box">
    <p class="select-text">Выбери сложность</p>
    <div class="difficulty-level">
@@ -67,7 +68,7 @@ const renderGame = () => {
    <input class="input" type="radio" name="level" value="3" id="level3">
    <label class="level" for="level3">3</label>
    </div>
-   <form action="">
+   
      <button class="start-button" type="submit" id="startButton">Старт</button>
    </form>
    <div id="levelError" style="color: red; display: none;">Выберите уровень</div>
