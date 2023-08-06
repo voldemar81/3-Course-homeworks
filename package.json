@@ -12,7 +12,8 @@
         "prepare": "husky install",
         "build": "cross-env NODE_ENV=production webpack",
         "lint:ts": "tsc --noEmit",
-        "test": "jest"
+        "test": "jest",
+        "type-check": "tsc"
     },
     "keywords": [],
     "author": "",
