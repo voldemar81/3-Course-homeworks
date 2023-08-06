@@ -5,7 +5,6 @@ const GameLevelTwo = 2;
 const GameLevelThree = 3;
 import { mixCards,Card } from './cards storage';
 export let page: number = StartGame;
-// export let gameResult = [];
 export let gameResult: Card[] = [];
 let startTime: number;
 let intervalId: NodeJS.Timeout;
@@ -29,27 +28,17 @@ const updateTimer = () => {
     const timerElement = document.querySelector('.time');
     if (timerElement !== null) {
     timerElement.textContent = formattedTime;
-        
-    console.log(formattedTime);
+     
+   
     }   
 };
-// let minutesElement: HTMLElement | null = document.querySelector('.min-figures');
 
-// const stopTimer = () => {
-//     clearInterval(intervalId);
-    
-//     const finalTime = document.querySelector('.time').textContent;
-    
-//     console.log(`Время игры: ${finalTime}`);
-    
-
-// };
 const stopTimer = (): void => {
     clearInterval(intervalId);
     
-       const finalTime = document.querySelector('.time')!.textContent;
+    const finalTime = document.querySelector('.time')!.textContent;
     
-    console.log(`Время игры: ${finalTime}`);
+    (`Время игры: ${finalTime}`);
     };
 
 const appEl: Element | null = document.querySelector('.game-start')!;
@@ -99,12 +88,7 @@ const renderGame = () => {
             renderGame();
     }
 }
-            // if (!selectedLevel) {
-            //     document.getElementById('levelError').style.display = 'block';
-            // } else {
-            //     document.getElementById('levelError').style.display = 'none';
-            //     renderGame();
-            // }
+            
         });
     }
 
@@ -161,16 +145,14 @@ const renderCards = () => {
     const cardsBox = document.querySelector(
         '.cards-box',
       ) as HTMLDivElement;
-        // const cardsBox = document.querySelector('.cards-box');
-       cardsBox.innerHTML = renderHtml();
+        cardsBox.innerHTML = renderHtml();
     
 
         delay(5000).then(() => {
         if (preview === true) {
             preview = false;
             cardsBox.innerHTML = renderHtml();
-            // document.querySelector('.cards-box').innerHTML = renderHtml();
-            flipСard(newCards);
+             flipСard(newCards);
             startTimer();
         
         }
@@ -182,13 +164,7 @@ const flipСard = (newCards: Card[]) => {
     const cardElements = document.querySelectorAll('.card');
     let openСards = 0;
 
-    // for (const cardElement of cardElements) {
-    //     cardElement.addEventListener('click', () => {
-    //         const index = cardElement.dataset.index;
-    //         cardElement.innerHTML = `
-    //             <img src="${newCards[index].image}" alt=""></img>
-    //         `;
-    cardElements.forEach((cardElement) => {
+        cardElements.forEach((cardElement) => {
 
         const divElement = cardElement as HTMLDivElement;
     
@@ -197,7 +173,6 @@ const flipСard = (newCards: Card[]) => {
           const index: number = Number(divElement.dataset.index);
           divElement.innerHTML = `<img src="${newCards[index].image}" alt=""></img>`;
             gameResult.push(newCards[index]);
-            console.log(gameResult);
             if (gameResult.length > 1) {
                 if (gameResult[0] === gameResult[1]) {
                     gameResult = [];
@@ -258,20 +233,11 @@ const showFinalScreen = (status: string) => {
   `;
   finalScreen.innerHTML = finalScreenHtml;
 
-    // const finalTimeElement = finalScreen.querySelector('.final-time');
-    // finalTimeElement.textContent = document.querySelector('.time').textContent;
-
     const finalTimeElement = finalScreen.querySelector('.final-time');
 
     if (finalTimeElement !== null) {
       finalTimeElement.textContent = document.querySelector('.time')!.textContent;
     }
-    // const resetButton = finalScreen.querySelector('.start-button');
-    // resetButton.addEventListener('click', () => {
-    //     document.body.removeChild(finalScreen);
-    //     page = StartGame;
-    //     renderGame();
-    // });
     
     const resetButton = finalScreen.querySelector('.start-button');
 if (resetButton) {
